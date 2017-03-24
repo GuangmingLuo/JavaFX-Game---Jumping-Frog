@@ -1,0 +1,416 @@
+package ui;
+
+import javax.swing.JPanel;
+
+import control.PlayerController;
+import persistence.WordMapper;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+
+public class PanelGame extends JPanel{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	int level = 1;
+	int[] y = {110,510,910,110,510,910,110,510,910}; 
+	String[] words = new String[10];
+	
+	int speed  = 1 ;
+	WordMapper wp = WordMapper.UNIQUEINSTANCE;
+	PlayerController pc = new PlayerController();
+	int stage = 0;
+	char input = '0';
+	int wordindex = 1;
+	int NrOfCloud = 0;
+
+
+
+	Layer background = null;
+    
+    Layer[] cloud = new Layer[10];   
+    boolean[] bind = {false,false,false,false,false,false,false,false,false,false}; 
+	
+	Layer frog1 = new Layer(475,575,1,"FROG");
+
+    Layer frog2 = new Layer(675,575,2,"FROG");
+
+    Layer frog3 = new Layer(875,575,3,"FROG");
+
+    Layer frog4 = new Layer(1075,575,4,"FROG");
+
+    Layer[] frog = {null,frog1,frog2,frog3,frog4};
+	
+	public PanelGame(){
+		initialComponent();
+		Thread animationThread = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+//                	if(pc.getKeyInput() != 0){
+//                		input = Character.toString(pc.getKeyInput());
+//                	}      	
+//                	if(input != null){
+//                		System.out.print(input);
+//                	}
+                	calculateY();
+                	moveFrog(); 
+                    repaint();
+                    try {Thread.sleep(10);} catch (Exception ex) {}
+                }
+            }
+        });
+
+        animationThread.start();
+		
+		}
+	
+
+	
+	private void initialComponent(){
+		
+		pc.setPanelGame(this);
+		this.addKeyListener(pc);
+		
+		this.createWord();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g){
+		
+        this.createBackground();
+		this.drawBackground(g);
+		
+		this.creatCloud();
+		this.drawCloud(g);
+		this.drawWord(g);
+		this.drawFrog(g);
+				
+		y[0] = y[0] + speed;
+		y[1] = y[1] + speed;
+		y[2] = y[2] + speed;
+		y[3] = y[3] - speed;
+		y[4] = y[4] - speed;
+		y[5] = y[5] - speed;
+		y[6] = y[6] + speed;
+		y[7] = y[7] + speed;
+		y[8] = y[8] + speed;
+		
+		calculateY();
+		
+//		this.drawFrog(g);
+		
+		this.requestFocus();
+		}
+	private void calculateY(){
+		if(y[0] >= 1200){
+			y[0]= -180;
+			y[6]= -180;
+		}
+		if(y[1] >= 1200){
+			y[1]= -180;
+			y[7]= -180;
+		}
+		if(y[2] >= 1200){
+			//System.out.println("y2 = " + y[2]);
+			y[2]= -180;
+			y[8]= -180;
+			//System.out.println("y2 = " + y[2]);
+		}
+		if(y[3] <= -180){
+			//System.out.println("y3 = " + y[3]);
+			y[3] =1200;
+			//System.out.println("y3 = " + y[3]);
+		}
+		if(y[4] <= -180){
+			y[4] = 1200;
+		}
+		if(y[5] <= -180){
+			y[5] = 1200;
+		}
+	}
+	
+	
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+	
+    private void createBackground(){
+		
+		background = new Layer(0,0,level,"BG");
+		
+	}
+	
+	private void drawBackground(Graphics g){
+		
+		background.draw(g);
+	}
+	
+	private void creatCloud(){
+		cloud[0] = new Layer(110,40,level,"Cloud");
+	    cloud[1] = new Layer(y[0],180,level,"Cloud");
+	    cloud[2] = new Layer(y[1],180,level,"Cloud");
+	    cloud[3] = new Layer(y[2],180,level,"Cloud");
+	    cloud[4] = new Layer(y[3],290,level,"Cloud");
+	    cloud[5] = new Layer(y[4],290,level,"Cloud");
+	    cloud[6] = new Layer(y[5],290,level,"Cloud");
+	    cloud[7] = new Layer(y[6],400,level,"Cloud");
+	    cloud[8] = new Layer(y[7],400,level,"Cloud");
+	    cloud[9] = new Layer(y[8],400,level,"Cloud");
+	    for(int i = 9; i>=0; i--){
+	    	if(bind[i]){
+	    		setFrogPosition(i);
+	    	}
+	    }
+	}	
+	
+
+	private void drawCloud (Graphics g){		
+        for(int i = 0; i < 10; i++){
+        	cloud[i].draw(g);
+        }	    
+	}
+	
+	
+	private void drawFrog(Graphics g){
+//		frog1.draw(g);
+//		frog2.draw(g);
+//		frog3.draw(g);
+//		frog4.draw(g);
+		for(int i = 1; i < 5; i++){
+			frog[i].draw(g);
+		}
+	    	    
+	}
+	
+	private void setFrogPosition(int nr){
+		frog[level].setX(cloud[nr].getX()+80);
+		frog[level].setY(cloud[nr].getY()+60);
+	}
+	
+	private void createWord(){
+		for(int i = 0; i < 10; i++ ){
+			words[i] = wp.getWordRandomly(level);
+		}
+		
+	}
+	
+	public String[] getWords(){
+		return words;
+	}
+	
+	private void drawWord(Graphics g){
+		
+		    Graphics2D g2 = (Graphics2D)g;
+		    int fontSize = 20;
+	        Font f = new Font("Comic Sans MS", Font.BOLD, fontSize);
+	        g2.setFont(f);
+		    //g2.setColor(Color.RED);
+		    g2.setStroke(new BasicStroke(10f));
+		
+			g2.drawString(words[0], 190, 100);
+			g2.drawString(words[1], y[0]+80, 240);
+			g2.drawString(words[2], y[1]+80, 240);
+			g2.drawString(words[3], y[2]+80, 240);
+			g2.drawString(words[4], y[3]+80, 350);
+			g2.drawString(words[5], y[4]+80, 350);
+			g2.drawString(words[6], y[5]+80, 350);
+			g2.drawString(words[7], y[6]+80, 460);
+			g2.drawString(words[8], y[7]+80, 460);
+			g2.drawString(words[9], y[8]+80, 460);	
+			
+		
+	}
+
+	
+	public void moveFrog(){
+		if(input != '0'){
+			switch(stage){
+			case 0:
+					if(NrOfCloud > 6){
+						char[] lists = new char[words[NrOfCloud].length()];
+						lists = this.changeStringToChar(words[NrOfCloud]);
+						if(wordindex < words[NrOfCloud].length())
+						{
+							if(lists[wordindex] == input){
+								    System.out.println(lists[wordindex]);
+									wordindex++; 
+							}
+						}
+						
+						if(wordindex == words[NrOfCloud].length())
+						{
+							System.out.println(words[NrOfCloud].length());
+							//setFrogPosition(NrOfCloud);
+							bind[NrOfCloud] = true;
+							this.setStage(1);
+							NrOfCloud = 0;
+							wordindex = 1;
+							break;   
+						} 
+					}
+					else{
+						for(int a = 7;a < 10;a++)
+						{
+							char[] list = new char[words[a].length()];
+							list = this.changeStringToChar(words[a]);   
+							if(list[0] == input)
+							{
+								NrOfCloud = a;
+								
+							}    		   	
+						}
+						System.out.println(NrOfCloud);
+					}
+					break;
+			case 1:
+					if(NrOfCloud > 3){
+					    	   char[] lists = new char[words[NrOfCloud].length()];
+					    	   lists = this.changeStringToChar(words[NrOfCloud]);
+					    	   if(wordindex < words[NrOfCloud].length())
+					    	   {
+					    		   if(lists[wordindex] == input){
+					    			   { wordindex++; }	   
+					    	   }
+					    	   }
+					    	   if(wordindex == words[NrOfCloud].length()){
+									//setFrogPosition(NrOfCloud);
+									bind[NrOfCloud] = true;
+									this.setStage(2);
+									NrOfCloud = 0;
+									wordindex = 1;
+									
+		                       	break;   
+					    	   } 
+					       }
+					       else{
+						       for(int a = 4;a < 7;a++)
+						         {
+						    	   char[] list = new char[words[a].length()];
+						    	   list = this.changeStringToChar(words[a]);   
+						           if(list[0] == input)
+						             {
+						        	   NrOfCloud = a;
+						             }    		   	
+						         }
+					           }
+					       break;
+			case 2:
+						 if(NrOfCloud > 0){
+					    	   char[] lists = new char[words[NrOfCloud].length()];
+					    	   lists = this.changeStringToChar(words[NrOfCloud]);
+					    	   if(wordindex < words[NrOfCloud].length())
+					    	   {
+					    		   if(lists[wordindex] == input){
+					    			   { wordindex++; }	   
+					    	   }
+					    	   }
+					    	   if(wordindex == words[NrOfCloud].length()){
+									//setFrogPosition(NrOfCloud);
+									bind[NrOfCloud] = true;
+									this.setStage(3);
+									NrOfCloud = 0;
+									wordindex = 1;
+		                       	break;   
+					    	   } 
+					       }
+					       else{
+						       for(int a = 1;a < 4;a++)
+						         {
+						    	   char[] list = new char[words[a].length()];
+						    	   list = this.changeStringToChar(words[a]);   
+						           if(list[0] == input)
+						             {
+						        	   NrOfCloud = a;
+						             }  
+						           System.out.println(NrOfCloud);
+						         }
+					           }
+					       break;
+			case 3:
+			    	   char[] lists = new char[words[0].length()];
+			    	   lists = this.changeStringToChar(words[0]);
+			    	   if(wordindex < words[0].length())
+			    	   {
+			    		   if(lists[wordindex] == input){
+			    			   { wordindex++; }	   
+			    	   }	   
+			    	   }
+			    	   if(wordindex == words[NrOfCloud].length()){
+						//setFrogPosition(i);
+						bind[NrOfCloud] = true;
+						this.setStage(0);
+						this.setLevel(this.level + 1);
+						this.createWord();
+						wordindex = 1;
+						for(int j = 0; j<10; j++){
+							bind[j] = false;
+						}
+						initFrog();
+						break;
+					    }
+				        break;
+			           }
+			this.setInput('0');
+		}			
+	}
+	
+	private void initFrog(){
+		frog1.setX(475);
+		frog1.setY(575);
+		frog2.setX(675);
+		frog2.setY(575);
+		frog3.setX(875);
+		frog3.setY(575);
+		frog4.setX(1075);
+		frog4.setY(575);
+	}
+
+	public int getStage() {
+		return stage;
+	}
+
+
+
+	public void setStage(int stage) {
+		this.stage = stage;
+	}
+
+
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+    public char getInput() {
+		return input;
+	}
+
+
+
+	public void setInput(char keyInput) {
+		this.input = keyInput;
+	}
+	
+	public char[] changeStringToChar(String a){
+		
+		char[] list1 = new char[a.length()];
+		list1 = a.toCharArray();
+		return list1;
+    }
+}

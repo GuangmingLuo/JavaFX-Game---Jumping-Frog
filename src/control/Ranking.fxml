@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RankingDialogController">
+   <children>
+      <TableView fx:id="personTable" layoutX="-54.0" layoutY="-58.0" prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="199.0" text="Name" />
+          <TableColumn fx:id="MaxGradeColumn" prefWidth="200.0" text="MaxGrade" />
+        </columns>
+      </TableView>
+      <Button layoutX="165.0" layoutY="352.0" mnemonicParsing="false" onAction="#handleClose" prefHeight="35.0" prefWidth="70.0" text="Close" />
+   </children>
+</AnchorPane>

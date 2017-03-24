@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.PersonCenterController">
+   <children>
+      <SplitPane dividerPositions="0.8190954773869347" layoutX="190.0" layoutY="59.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="598.0">
+               <children>
+                  <GridPane layoutX="163.0" layoutY="46.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="46.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="199.0" text="Name" />
+                        <Label alignment="CENTER" prefHeight="36.0" prefWidth="199.0" text="MaxGrade" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="199.0" text="MinTime" GridPane.rowIndex="2" />
+                        <TextField fx:id="Name" prefHeight="40.0" prefWidth="250.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="MaxGrade" prefHeight="40.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="MinTime" prefHeight="40.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+                  <Label alignment="CENTER" layoutX="224.0" layoutY="2.0" prefHeight="40.0" prefWidth="114.0" text="OverView" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="598.0">
+               <children>
+                  <Button layoutX="86.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="35.0" prefWidth="80.0" text="Cancel" />
+                  <Button layoutX="430.0" layoutY="17.0" mnemonicParsing="false" onAction="#handlestartGame" prefHeight="35.0" prefWidth="80.0" text="StartGame" />
+                  <Button layoutX="249.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleShowRanking" prefHeight="35.0" prefWidth="101.0" text="ShowRanking" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
