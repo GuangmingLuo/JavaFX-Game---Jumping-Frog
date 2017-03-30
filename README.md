@@ -1,5 +1,5 @@
 # JavaFX-Game---Jumping-Frog
-It's a JavaFX game made in 2015 and the idea comes from the Chinese Jinshan Dazi Game (金山打字游戏) which is meant to train your typing skills via playing game. You need to install the e(fx)clipse tool and Scene Builder to run this application. Besides, you need to fill in your own server address, username and password in the database.properties and make some table in your own database.
+It's a JavaFX game made in 2015 and the idea comes from the Chinese Jinshan Dazi Game (金山打字游戏) which is meant to train your typing skills via playing game. You need to install the e(fx)clipse tool and Scene Builder to run this application. Besides, you need to fill in your own server address, username and password in the database.properties and make the corresponding tables in your own database.
 
 This project has used Javafx API for making an interractive UI.
 
